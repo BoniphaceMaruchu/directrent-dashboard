@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DirectRent Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f6f4ef;
+      color: #2b2b2b;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+    .hero {
+      background: #1f1f1f;
+      color: white;
+      padding: 32px;
+      border-radius: 18px;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      margin: 0 0 12px;
+      font-size: 38px;
+    }
+    .hero p {
+      margin: 0;
+      line-height: 1.6;
+      color: #e5e5e5;
+    }
+    .summary, .card, .chart-card {
+      background: white;
+      border: 1px solid #ddd3c3;
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 22px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .summary h2, .section-title {
+      color: #b08d57;
+      margin-top: 0;
+    }
+    .tabs {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin: 28px 0 20px;
+      border-bottom: 1px solid #ddd3c3;
+      padding-bottom: 12px;
+    }
+    .tab-button {
+      background: none;
+      border: none;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 16px;
+      color: #7d6843;
+      border-bottom: 3px solid transparent;
+    }
+    .tab-button.active {
+      color: #b08d57;
+      border-bottom-color: #b08d57;
+      font-weight: bold;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    ul {
+      line-height: 1.8;
+      padding-left: 22px;
+    }
+    canvas {
+      max-width: 100%;
+    }
+    .metric {
+      font-size: 28px;
+      font-weight: bold;
+      color: #1f1f1f;
+    }
+    .muted {
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>DirectRent Tanzania</h1>
+      <p>
+        An interactive MVP research dashboard for a tenant-landlord rental platform
+        that reduces reliance on brokers, improves trust, and creates faster direct matches.
+      </p>
+    </section>
+
+    <section class="summary">
+      <h2>Executive Summary</h2>
+      <ul>
+        <li>The product connects tenants and landlords directly in one mobile-first platform.</li>
+        <li>The MVP focuses on listings, photos, search, trust indicators, and direct chat.</li>
+        <li>Revenue model: TZS 1,000 for tenants and TZS 5,000 for landlords.</li>
+        <li>Main launch challenge: trust, listing quality, and early supply.</li>
+        <li>Main advantage: faster discovery, clearer communication, and lower friction than broker-heavy search.</li>
+      </ul>
+    </section>
+
+    <div class="tabs">
+      <button class="tab-button active" onclick="showTab('overview', this)">Market Overview</button>
+      <button class="tab-button" onclick="showTab('features', this)">MVP Features</button>
+      <button class="tab-button" onclick="showTab('business', this)">Business Model</button>
+      <button class="tab-button" onclick="showTab('risks', this)">Risks</button>
+    </div>
+
+    <div id="overview" class="tab-content active">
+      <div class="grid">
+        <div class="chart-card">
+          <h3 class="section-title">Problem Areas</h3>
+          <canvas id="problemChart"></canvas>
+        </div>
+        <div class="card">
+          <h3 class="section-title">Core Problem</h3>
+          <p>Tenants often rely on scattered WhatsApp groups, referrals, and brokers. Landlords struggle to attract serious leads efficiently.</p>
+          <p class="muted">The platform creates structure, transparency, and direct communication.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="features" class="tab-content">
+      <div class="grid">
+        <div class="card">
+          <h3 class="section-title">Must-have MVP Features</h3>
+          <ul>
+            <li>Tenant and landlord onboarding</li>
+            <li>Property listings</li>
+            <li>Photo uploads</li>
+            <li>Search and filters</li>
+            <li>Listing detail page</li>
+            <li>Direct in-app chat</li>
+            <li>Basic verification badge</li>
+            <li>Simple subscriptions</li>
+          </ul>
+        </div>
+        <div class="chart-card">
+          <h3 class="section-title">Feature Priority</h3>
+          <canvas id="featureChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div id="business" class="tab-content">
+      <div class="grid">
+        <div class="card">
+          <h3 class="section-title">Subscription Pricing</h3>
+          <p><span class="metric">TZS 1,000</span><br>Tenant access</p>
+          <p><span class="metric">TZS 5,000</span><br>Landlord access</p>
+        </div>
+        <div class="chart-card">
+          <h3 class="section-title">Revenue Mix</h3>
+          <canvas id="revenueChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div id="risks" class="tab-content">
+      <div class="grid">
+        <div class="card">
+          <h3 class="section-title">Key Risks</h3>
+          <ul>
+            <li>Fake or low-quality listings</li>
+            <li>Weak early landlord supply</li>
+            <li>Trust gap between users</li>
+            <li>Payment friction</li>
+          </ul>
+        </div>
+        <div class="chart-card">
+          <h3 class="section-title">Risk Severity</h3>
+          <canvas id="riskChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showTab(id, btn) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    new Chart(document.getElementById('problemChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Fragmented Search', 'Broker Cost', 'Low Trust', 'Slow Communication'],
+        datasets: [{
+          label: 'Pain Level',
+          data: [85, 70, 90, 75]
+        }]
+      },
+      options: { responsive: true }
+    });
+
+    new Chart(document.getElementById('featureChart'), {
+      type: 'radar',
+      data: {
+        labels: ['Listings', 'Photos', 'Search', 'Chat', 'Verification', 'Payments'],
+        datasets: [{
+          label: 'Priority',
+          data: [10, 9, 10, 9, 8, 7]
+        }]
+      },
+      options: { responsive: true }
+    });
+
+    new Chart(document.getElementById('revenueChart'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Tenant', 'Landlord'],
+        datasets: [{
+          data: [1000, 5000]
+        }]
+      },
+      options: { responsive: true }
+    });
+
+    new Chart(document.getElementById('riskChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Fake Listings', 'Low Supply', 'Trust Gap', 'Payment Friction'],
+        datasets: [{
+          label: 'Severity',
+          data: [90, 75, 85, 60]
+        }]
+      },
+      options: { responsive: true, indexAxis: 'y' }
+    });
+  </script>
+</body>
+</html>
